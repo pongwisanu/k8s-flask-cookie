@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask-pod
+  template:
+    metadata:
+      labels:
+        app: flask-pod
+    spec:
+      containers:
+        - name: flask
+          image: nexus.nida.ac.th/flask-cookie:latest
+          env:
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET_KEY
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: nexus
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-pod
+  template:
+    metadata:
+      labels:
+        app: redis-pod
+    spec:
+      containers:
+      - name: redis
+        image: redis:6.2
+        ports:
+        - containerPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight-deployment
+  labels:
+    app: redisinsight-deployment
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: redisinsight-pod
+  template: 
+    metadata:
+      labels:
+        app: redisinsight-pod
+    spec:
+      containers:
+      - name:  redisinsight 
+        image: redis/redisinsight:latest 
+        imagePullPolicy: IfNotPresent 
+        volumeMounts:
+        - name: redisinsight
+          mountPath: /data
+        ports:
+        - containerPort: 5540 
+          protocol: TCP
+      volumes:
+      - name: redisinsight
+        emptyDir: {}

@@ -1,0 +1,17 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-service
+    networks:
+      - jwtapp_nw
+  flask:
+    build: .
+    container_name: jwtapp
+    ports:
+      - 5000:5000
+    depends_on:
+      - redis
+    networks:
+      - jwtapp_nw
+networks:
+  jwtapp_nw:

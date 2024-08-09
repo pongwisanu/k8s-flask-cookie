@@ -1,0 +1,61 @@
+<html>
+<header>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</header>
+
+<body>
+    <div>
+        <h1>Login</h1>
+    </div>
+    <div>
+        <label>Username :</label>
+        <input type="text" id="username">
+    </div>
+    <div>
+        <label>Password :</label>
+        <input type="password" id="password">
+    </div>
+    <div>
+        <button id="login_btn">Login</button>
+    </div>
+    <div>
+        <label id="response"></label>
+    </div>
+</body>
+
+</html>
+<script>
+    $(document).ready(function () {
+        $("#login_btn").click(() => {
+            Login()
+        })
+    })
+
+    async function Login() {
+        body = {
+            username: $('#username').val(),
+            password: $('#password').val()
+        }
+
+        url = "{{url_for('Login')}}"
+
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+
+        if(!res.ok){
+            const json = await res.json()
+            $('#response').text(json['msg'])
+            $('#response').css("color" , "red")
+        }
+        else {
+            url = "{{url_for('Protected')}}"
+            window.location.href = url
+        }
+    }
+</script>

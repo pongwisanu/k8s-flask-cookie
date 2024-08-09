@@ -1,0 +1,26 @@
+<html>
+<header>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</header>
+
+<body>
+    <div>
+        <p>
+            {{data}}
+        </p>
+    </div>
+    <div>
+        <button onclick="Logout()">Logout</button>
+    </div>
+</body>
+
+</html>
+<script>
+    async function Logout() {
+        url = "{{url_for('Logout')}}"
+        const res = await fetch(url)
+
+        window.location.reload()
+    }
+</script>
