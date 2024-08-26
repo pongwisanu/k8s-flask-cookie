@@ -9,8 +9,9 @@ import secrets
 app = Flask(__name__)
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config["JWT_COOKIE_SECURE"] = False
-# app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
-app.config['JWT_SECRET_KEY']  = "e8fe0e7be2ce126db030969c79f0de3e014fc16b07b6ae7b7d4f52d7478689b5"
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
+### For local dev use env instead for real situation
+# app.config['JWT_SECRET_KEY']  = "e8fe0e7be2ce126db030969c79f0de3e014fc16b07b6ae7b7d4f52d7478689b5"
 
 jwt = JWTManager(app)
 
